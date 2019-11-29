@@ -1,0 +1,22 @@
+{
+  "name": "tokenlink",
+  "version": "1.0.0",
+  "description": "TokenLink is a JavaScript library for managing tokens.",
+  "main": "token_link.js",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/OneCent01/TokenLink.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/OneCent01/TokenLink/issues"
+  },
+  "homepage": "https://github.com/OneCent01/TokenLink#readme"
+}
