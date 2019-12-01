@@ -13,7 +13,7 @@ const createTokenStore = (id) => {
 	// exposed methods in the return
 	let tokenStore = {}
 
-	const areValidTokens = token => Object.values(tokens).every(val => (
+	const areValidTokens = tokens => Object.values(tokens).every(val => (
 		val === undefined 
 		|| val === null 
 		|| typeof val === 'string'
@@ -45,7 +45,12 @@ const createTokenStore = (id) => {
 			}
 		},
 		getTokens: () => Object.keys(tokenStore),
-		clearToken: token => setTokenVal(null, token),
+		clearToken: token => {
+			tokenStore = Object.keys(tokenStore).filter(t => t !== token).reduce((newStore, token) => {
+				newStore[token] = tokenStore[token]
+				return newStore
+			}, {})
+		},
 		clearTokens: () => {
 			tokenStore = {}
 			setTokenCounter(0)
