@@ -1,6 +1,6 @@
 # TokenLink
 
-TokenLink is a JavaScript library for managing tokens. 
+TokenLink is a NodeJS library for managing tokens on the server.
 
 The core function, createTokenStore, is essentially a simple factory for instantiating key-value stores with extended functionality. 
 

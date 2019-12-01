@@ -11,7 +11,7 @@ const createTokenStore = (id) => {
 
 	// private store only accessible through the publicly 
 	// exposed methods in the return
-	const tokenStore = {}
+	let tokenStore = {}
 
 	const areValidTokens = token => Object.values(tokens).every(val => (
 		val === undefined 
