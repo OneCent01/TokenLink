@@ -33,7 +33,7 @@ tokenStore.setTokenVal(
 
 ## Available methods
 
-createTokenStore([id])
+#### createTokenStore([id])
 * @args
     * id(optional): identifier to use as the base for creating token strings. Defaults to a random 
 
@@ -82,7 +82,8 @@ const newToken = tokenStore.createToken()
 
 tokenStore.setTokenVal('data', newToken)
 
-console.log(tokenStore.getTokenVal(newToken)) // output: 'data'
+console.log(tokenStore.getTokenVal(newToken)) 
+// output: 'data'
 ```
 
 #### getTokens()
@@ -98,8 +99,8 @@ const newToken = tokenStore.createToken()
 
 tokenStore.setTokenVal('data', newToken)
 
-console.log(tokenStore.getTokens()) // returns [<newToken STRING>]
-
+console.log(tokenStore.getTokens()) 
+// output: [<newToken STRING>]
 ```
 
 #### clearTokens()
@@ -115,11 +116,14 @@ const newToken = tokenStore.createToken()
 
 tokenStore.setTokenVal('data', newToken)
 
-console.log(tokenStore.getTokens()) // returns [<newToken STRING>] array with the one set token
+console.log(tokenStore.getTokens()) 
+// output: [<newToken STRING>] array with the one set token
 
-tokenStore.clearTokens() // remove all tokens and associated values
+// remove all tokens and associated values
+tokenStore.clearTokens() 
 
-console.log(tokenStore.getTokens()) // returns [] empty array
+console.log(tokenStore.getTokens()) 
+// output: [] (empty array)
 ```
 
 #### clearToken(token)
@@ -135,11 +139,14 @@ const newToken = tokenStore.createToken()
 
 tokenStore.setTokenVal('data', newToken)
 
-console.log(tokenStore.getTokens()) // returns [<newToken STRING>] array with the one set token
+console.log(tokenStore.getTokens()) 
+// output: [<newToken STRING>] array with the one set token
 
-tokenStore.clearToken(newToken) // remove all tokens and associated values
+// remove specified token and associated value
+tokenStore.clearToken(newToken) 
 
-console.log(tokenStore.getTokens()) // returns [] empty array
+console.log(tokenStore.getTokens()) 
+// output: [] (empty array)
 ```
 
 #### setTokens(tokens)
@@ -159,7 +166,8 @@ tokenStore.setTokens({
 	.
 })
 
-console.log(tokenStore.getTokens()) // returns [client1, client2, ...]
+console.log(tokenStore.getTokens()) 
+// output: [client1, client2, ...]
 ```
 
 #### getStore()
@@ -179,7 +187,7 @@ tokenStore.setTokens({
 })
 
 console.log(tokenStore.getStore())
-// returns {client1: 'client1_secret', client2: 'client2_secret', ...}
+// output: {client1: 'client1_secret', client2: 'client2_secret', ...}
 ```
 
 #### setTokenCounter(counterVal)
@@ -197,7 +205,7 @@ tokenStore.createToken()
 tokenStore.createToken()
 
 console.log(tokenStore.getTokens()) 
-// returns: [client10, client11]
+// output: [client10, client11]
 ```
 
 #### updateId(newId[, counterVal])
@@ -215,7 +223,7 @@ tokenStore.updateId('connections')
 tokenStore.createToken()
 
 console.log(tokenStore.getTokens()) 
-// returns: [client0, connections1]
+// output: [client0, connections1]
 ```
 
 
