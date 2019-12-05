@@ -1,29 +1,58 @@
 const crypto = require('crypto')
 
-const createTokenStore = (id) => {
+const createTokenStore = (options={}) => {
+	const { id, store } = options
+
 	const createValidId = id => (
 		id && typeof id === 'string' 
 			? id 
 			: crypto.randomBytes(6 * 6).toString('base64').slice(0, 6)
 	)
-	let identifier = createValidId(id)
-	let created = 0
 
-	// private store only accessible through the publicly 
-	// exposed methods in the return
-	let tokenStore = {}
+	const freshTokenCounter = (tokenStore) => {
+		const tokensCount = Object.keys(tokenStore).length + 1
+		const maxNum = Object.keys(tokenStore).reduce((max, token) => {
+			let endFound = false
+			
+			const numbers = token.split('').reverse().reduce((final, char) => {
+				if(!endFound && typeof +char === 'number') {
+					final.push(char)
+				} else {
+					endFound = true
+				}
+				return final
+			}, [])
+			
+			const number = +(numbers.reverse().join(''))
 
-	const areValidTokens = tokens => Object.values(tokens).every(val => (
-		val === undefined 
-		|| val === null 
-		|| typeof val === 'string'
-	))
+			if(number+1 > max) {
+				max = number+1
+			}
+			
+			return max
+		}, tokensCount)
 
-	const setTokenCounter = counterVal => {created = Math.floor(counterVal)}
+		return maxNum
+	}
 
-	const setTokenVal = (val, token=`${identifier}${created}`) => {
-		if(tokenStore.hasOwnProperty(token)) {
-			tokenStore[token] = val
+	const defaultTokenStore = (
+		store && typeof store === 'object' && !Array.isArray(store) 
+		? store 
+		: {}
+	)
+
+	const storeState = {
+		id: createValidId(id),
+		store: defaultTokenStore,
+		created: freshTokenCounter(defaultTokenStore)
+	}
+
+
+	const setTokenCounter = counterVal => {storeState.created = Math.floor(counterVal)}
+
+	const setTokenVal = (val, token=`${storeState.id}${storeState.created}`) => {
+		if(storeState.store.hasOwnProperty(token)) {
+			storeState.store[token] = val
 			return true
 		} else {
 			return 'ERROR: token not found in store'
@@ -32,27 +61,28 @@ const createTokenStore = (id) => {
 	
 	return {
 		createToken: (val) => {
-			const newToken = `${identifier}${created++}`
-			tokenStore[newToken] = val !== undefined ? val : null
+			const newToken = `${storeState.id}${storeState.created++}`
+			storeState.store[newToken] = val !== undefined ? val : null
 			return newToken
 		},
 		setTokenVal,
 		getTokenVal: token => {
-			if(tokenStore.hasOwnProperty(token)) {
-				return tokenStore[token]
+			if(storeState.store.hasOwnProperty(token)) {
+				return storeState.store[token]
 			} else {
 				return 'ERROR: token not found in store'
 			}
 		},
-		getTokens: () => Object.keys(tokenStore),
+		getId: () => storeState.id,
+		getTokens: () => Object.keys(storeState.store),
 		clearToken: token => {
-			tokenStore = Object.keys(tokenStore).filter(t => t !== token).reduce((newStore, token) => {
-				newStore[token] = tokenStore[token]
+			storeState.store = Object.keys(storeState.store).filter(t => t !== token).reduce((newStore, token) => {
+				newStore[token] = storeState.store[token]
 				return newStore
 			}, {})
 		},
 		clearTokens: () => {
-			tokenStore = {}
+			storeState.store = {}
 			setTokenCounter(0)
 			return true
 		},
@@ -60,46 +90,32 @@ const createTokenStore = (id) => {
 			if(
 				tokens 
 				&& typeof tokens === 'object' 
-				&& !Array.isArray(tokens)
-				&& Object.keys(tokens).length
-				&& areValidTokens(tokens)
 			) {
-				tokenStore = {
-					...tokenStore,
-					...tokens
-				}
-				const tokensCount = Object.keys(tokenStore).length
-				const maxNum = Object.keys(tokenStore).reduce((max, token) => {
-					let endFound = false
-					
-					const numbers = token.split('').reverse().reduce((final, char) => {
-						if(!endFound && typeof +char === 'number') {
-							final.push(char)
-						} else {
-							endFound = true
-						}
-						return final
-					}, [])
-					
-					const number = +(numbers.reverse().join(''))
-					if(number+1 > max) {
-						max = number+1
+				if(Array.isArray(tokens)) {
+					tokens.forEach(token => {
+						storeState.store[token] = null
+					})
+				} else {
+					storeState.store = {
+						...storeState.store,
+						...tokens
 					}
-					
-					return max
-				}, tokensCount)
+				}
 
-				setTokenCounter(maxNum)
+				setTokenCounter(
+					freshTokenCounter(storeState.store)
+				)
 
 				return true
 			} else {
 				return 'ERROR: invalid tokens format'
 			}
 		},
-		getStore: () => ({...tokenStore}),
+		getStore: () => ({...storeState.store}),
 		setTokenCounter,
+		getTokenCounter: () => storeState.created,
 		updateId: (newId, counterVal) => {
-			identifier = createValidId(newId)
+			storeState.id = createValidId(newId)
 			if(
 				counterVal !== undefined 
 				&& typeof counterVal === 'number'

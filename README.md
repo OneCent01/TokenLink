@@ -33,15 +33,17 @@ tokenStore.setTokenVal(
 
 ## Available methods
 
-#### createTokenStore([id])
+#### createTokenStore([options])
 * @args
-    * id(optional): identifier to use as the base for creating token strings. Defaults to a random 
+    * options(optional): object enabling initialization variables to be set on instantiation. Currently supports setting the id string used for token generation and an object to use as the default token store. 
+        * id: identifier to use as the base for creating token strings. Defaults to a randomly generated 6-character string. 
+        * store: object to use as the default internal store rather than an empty object. 
 
 Core method for instantiating TokenLink objects. Returns a reference to the created TokenLink object. 
 
 ```javascript
 // tokens generated will use the given ID or a randomly generated 6-character string appended with the count 
-const tokenStore = TokenLink.createTokenStore('client')
+const tokenStore = TokenLink.createTokenStore({id: 'client'})
 ```
 
 #### createToken([val])
@@ -197,7 +199,7 @@ console.log(tokenStore.getStore())
 Allows for setting of the counter number trailing every newly created token. 
 
 ```javascript
-const tokenStore = TokenLink.createTokenStore('client')
+const tokenStore = TokenLink.createTokenStore({id: 'client'})
 
 tokenStore.setTokenCounter(10)
 
@@ -216,7 +218,7 @@ console.log(tokenStore.getTokens())
 Updates the identifier used to generate tokens when createToken is called. Uses the given id if it's valid, otherwise it generates a random 6-character base64 string to use. 
 
 ```javascript
-const tokenStore = TokenLink.createTokenStore('client')
+const tokenStore = TokenLink.createTokenStore({id: 'client'})
 
 tokenStore.createToken()
 tokenStore.updateId('connections')
@@ -232,3 +234,9 @@ console.log(tokenStore.getTokens())
 Feel free to contact me with any questions or comments at jmpenney22@gmail.com. 
 
 Pull requests are encouraged! 
+
+## Changelog
+* 1.2.5
+    * TOKEN DATA TYPE: accept a value of any type to associate with a token, rather than restricting it to a stirng. 
+    * INITIALIZATION OPTIONS: instantiation now accepts on optoinal object that sets initilization values. Current supports id (random string if none) and store (empty object if none)
+    * SET TOKENS: accepts an array to set tokens in the store initilized with null assocaited data or an object with key-values to add to the store. 

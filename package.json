@@ -7,7 +7,7 @@
     "test": "tests"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest"
   },
   "repository": {
     "type": "git",
@@ -18,5 +18,8 @@
   "bugs": {
     "url": "https://github.com/OneCent01/TokenLink/issues"
   },
-  "homepage": "https://github.com/OneCent01/TokenLink#readme"
+  "homepage": "https://github.com/OneCent01/TokenLink#readme",
+  "dependencies": {
+    "jest": "^24.9.0"
+  }
 }
