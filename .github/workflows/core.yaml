@@ -9,7 +9,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v1
       - name: Hello world action step
-        uses: ./ # Uses an action in the root directory
+        # uses: ./ # Uses an action in the root directory
         id: hello
       - name: Get the output
         run: echo "The output was ${{ steps.hello.outputs.success }}"
