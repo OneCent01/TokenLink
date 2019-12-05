@@ -1,0 +1,8 @@
+name: 'test'
+description: 'testyyy'
+outputs:
+  success: # id of output
+    description: 'I succeeded'
+runs:
+  using: 'node12'
+  main: 'index.js'
