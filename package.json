@@ -1,6 +1,6 @@
 {
   "name": "tokenlink",
-  "version": "1.2.4",
+  "version": "1.2.5",
   "description": "TokenLink is a NodeJS library for managing tokens.",
   "main": "token_link.js",
   "directories": {
