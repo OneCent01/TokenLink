@@ -1,6 +1,7 @@
-on: [push]
 
 name: Core Tests
+
+on: [push]
   test: 
     runs-on: ubuntu-latest
 
