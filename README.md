@@ -66,7 +66,7 @@ const tokenStore = TokenLink.createTokenStore({id: 'client'})
 * @args: 
     * val(optional): value to associate with the token. Defaults to null. 
 
-Generates a token, sets it on the store with the given value or a null by default. 
+Generates a token, sets it on the store with the given value or a null by default. Returns the generated token. 
 
 ```javascript
 const newToken = tokenStore.createToken()
@@ -91,7 +91,7 @@ tokenStore.setTokenVal('data', newToken)
 * @args
     * token: token to look up in the tokenStore. 
 
-Looks up and returns the value of a given token in the store. 
+Looks up and returns the value of a given token in the store. On success, returns the value set on the token. Otherwise, returns the error string `ERROR: token not found in store`. 
 
 ```javascript
 const tokenStore = TokenLink.createTokenStore()
@@ -148,7 +148,7 @@ console.log(tokenStore.getTokens())
 * @args
     * token: token to lookup and clear
 
-Sets the value of the given token to null in the internal tokenState, erasing any previously associated data.
+Sets the value of the given token to null in the internal tokenState, erasing any previously associated data. Returns true on success. 
 
 ```javascript
 const tokenStore = TokenLink.createTokenStore()
@@ -171,7 +171,7 @@ console.log(tokenStore.getTokens())
 * @args
     * tokens: object of token-value pairs or an array of tokens to add to the tokenStore. 
 
-Adds the given tokens to the internal tokenStore object, updating the token generation counter to the larger of (a) the new number of tokens in the store or (b) the largest trailing number in the updated store. 
+Adds the given tokens to the internal tokenStore object, updating the token generation counter to the larger of (a) the new number of tokens in the store or (b) the largest trailing number in the updated store. Returns true on success, otherwise returns the error string `ERROR: invalid tokens format`.
 
 ```javascript
 const tokenStore = TokenLink.createTokenStore()
@@ -193,6 +193,7 @@ console.log(tokenStore.getTokens())
     * NO ARGS 
 
 Retuns a copy of the internal tokenStore object. 
+
 ```javascript
 const tokenStore = TokenLink.createTokenStore()
 
@@ -212,7 +213,7 @@ console.log(tokenStore.getStore())
 * @args
     * counterVal: integer at which to set the internal tokenCounter variable
 
-Allows for setting of the counter number trailing every newly created token. 
+Allows for setting of the counter number trailing every newly created token. Returns true on success. 
 
 ```javascript
 const tokenStore = TokenLink.createTokenStore({id: 'client'})
@@ -231,7 +232,7 @@ console.log(tokenStore.getTokens())
     * newId: string leading every generated token string
     * counterVal(optional): 
 
-Updates the identifier used to generate tokens when createToken is called. Uses the given id if it's valid, otherwise it generates a random 6-character base64 string to use. 
+Updates the identifier used to generate tokens when createToken is called. Uses the given id if it's valid, otherwise it generates a random 6-character base64 string to use. Returns true on success. 
 
 ```javascript
 const tokenStore = TokenLink.createTokenStore({id: 'client'})

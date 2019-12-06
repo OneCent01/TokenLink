@@ -82,6 +82,7 @@ const createTokenStore = (options={}) => {
 				newStore[token] = storeState.store[token]
 				return newStore
 			}, {})
+			return true
 		},
 		clearTokens: () => {
 			storeState.store = {}
