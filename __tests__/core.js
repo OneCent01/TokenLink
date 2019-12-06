@@ -36,7 +36,7 @@ const tests = {
 		const tokenStoreTokens = tokenStore.getTokens()
 
 		expect(tokenStoreTokens.length).toBe(3)
-		expect(tokenStoreTokens.includes('connection3')).toBe(false)
+		expect(tokenStoreTokens.includes('connection3')).toBe(true)
 
 	},
 	"Creation: create tokens": () => {
