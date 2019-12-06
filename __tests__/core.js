@@ -1,71 +1,67 @@
 const { createTokenStore } =  require('../token_link.js')
-
+const fs = require('fs')
 // INSTANTIATION
 
-test('Insantiation: token store type', () => {
-	let tokenStore = createTokenStore()
-	let tokenStoreState = tokenStore.getStore()
+const tests = {
+	"Insantiation: token store type": () => {
+		let tokenStore = createTokenStore()
+		let tokenStoreState = tokenStore.getStore()
 
-	expect(typeof tokenStoreState).toBe('object')
-	expect(Array.isArray(tokenStoreState)).toBe(false)
-})
+		expect(typeof tokenStoreState).toBe('object')
+		expect(Array.isArray(tokenStoreState)).toBe(false)
 
-test('Instantiation: ID default', () => {
-	let tokenStore = createTokenStore()
-	let tokenStoreId = tokenStore.getId()
+	},
+	"Instantiation: ID default": () => {
+		const tokenStore = createTokenStore({id: 'connection'})
+		const tokenStoreId = tokenStore.getId()
 
-	expect(typeof tokenStoreId).toBe('string')
-	expect(tokenStoreId.length).toBe(6)
-})
+		expect(typeof tokenStoreId).toBe('string')
+		expect(tokenStoreId).toBe('connection')
 
-test('Instantiation: setting ID', () => {
-	const tokenStore = createTokenStore({id: 'connection'})
-	const tokenStoreId = tokenStore.getId()
+	},
+	"Instantiation: default store": () => {
+		const testDefaultStore = {connection1: null, connection2: null}
+		const tokenStore = createTokenStore({store: testDefaultStore})
+		const tokenStoreState = tokenStore.getStore()
 
-	expect(typeof tokenStoreId).toBe('string')
-	expect(tokenStoreId).toBe('connection')
-})
+		expect(JSON.stringify(tokenStoreState)).toBe(JSON.stringify(testDefaultStore))
+		expect(tokenStore.getTokenCounter()).toBe(3)
 
-test('Instantiation: default store', () => {
-	const testDefaultStore = {connection1: null, connection2: null}
-	const tokenStore = createTokenStore({store: testDefaultStore})
-	const tokenStoreState = tokenStore.getStore()
+	},
+	"Instantiation: default store and ID": () => {
+		const testDefaultStore = {connection1: null, connection2: null}
+		const tokenStore = createTokenStore({id: 'connection', store: testDefaultStore})
 
-	expect(JSON.stringify(tokenStoreState)).toBe(JSON.stringify(testDefaultStore))
-	expect(tokenStore.getTokenCounter()).toBe(3)
-})
+		tokenStore.createToken()
+		const tokenStoreTokens = tokenStore.getTokens()
 
-test('Instantiation: default store and ID', () => {
-	const testDefaultStore = {connection1: null, connection2: null}
-	const tokenStore = createTokenStore({id: 'connection', store: testDefaultStore})
+		expect(tokenStoreTokens.length).toBe(3)
+		expect(tokenStoreTokens.includes('connection3')).toBe(false)
 
-	tokenStore.createToken()
-	const tokenStoreTokens = tokenStore.getTokens()
+	},
+	"Creation: create tokens": () => {
+		const tokenStore = createTokenStore()
 
-	expect(tokenStoreTokens.length).toBe(3)
-	expect(tokenStoreTokens.includes('connection3')).toBe(true)
-})
+		const numberToken = tokenStore.createToken(10) // number
+		const arrayToken = tokenStore.createToken([1, 2, 3]) // array
+		const objectToken = tokenStore.createToken({id: 'terry'}) // object
+		const stringToken = tokenStore.createToken('elephants') // string
 
-// CREATION
+		const tokenStoreTokens = tokenStore.getTokens()
 
-test('Creation: create tokens', () => {
-	const tokenStore = createTokenStore()
+		expect(tokenStoreTokens.length).toBe(4)
 
-	const numberToken = tokenStore.createToken(10) // number
-	const arrayToken = tokenStore.createToken([1, 2, 3]) // array
-	const objectToken = tokenStore.createToken({id: 'terry'}) // object
-	const stringToken = tokenStore.createToken('elephants') // string
+		expect(typeof tokenStore.getTokenVal(numberToken)).toBe('number')
+		expect(Array.isArray(tokenStore.getTokenVal(arrayToken))).toBe(true)
+		expect(typeof tokenStore.getTokenVal(objectToken)).toBe('object')
+		expect(typeof tokenStore.getTokenVal(stringToken)).toBe('string')
 
-	const tokenStoreTokens = tokenStore.getTokens()
+	}
+}
 
-	expect(tokenStoreTokens.length).toBe(4)
+Object.keys(tests).forEach(testName => test(testName, tests[testName]))
 
-	expect(typeof tokenStore.getTokenVal(numberToken)).toBe('number')
-	expect(Array.isArray(tokenStore.getTokenVal(arrayToken))).toBe(true)
-	expect(typeof tokenStore.getTokenVal(objectToken)).toBe('object')
-	expect(typeof tokenStore.getTokenVal(stringToken)).toBe('string')
-})
-
+// fs.writeFile('results', `true, true`,)
 // // SETTINGS
 
 // test('Setter: setTokenVal', () => {

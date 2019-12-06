@@ -23,5 +23,12 @@
     "@actions/core": "^1.2.0",
     "@actions/github": "^1.1.0",
     "jest": "^24.9.0"
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "reporters": [
+      "default",
+      "./tests/jestReporter.js"
+    ]
   }
 }
