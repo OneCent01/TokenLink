@@ -1,12 +1,19 @@
+const fs = require('fs')
+
 class MyCustomReporter {
 	constructor(globalConfig, options) {
 	  this._globalConfig = globalConfig
 	  this._options = options
 	}
 
-	onTestResult(_, testResult) {
-		const results = testResult.testResults.reduce((results, result) => {
-			const target = result.status === 'passed' ? results.success : results.fail
+	onTestResult(_, res) {
+		const results = res.testResults.reduce((results, result) => {
+			const target = (
+				result.status === 'passed' 
+					? results.success 
+					: results.fail
+			)
+
 			target.count++
 			target.names.push(result.title)
 
@@ -16,7 +23,8 @@ class MyCustomReporter {
 			fail: {count: 0, names: []}
 		})
 
-		console.log('results: ', results)
+		// Hook in README file modification with fs 
+		// depending on the successs or failure of the tests
 	}
 }
 

@@ -30,8 +30,24 @@ tokenStore.setTokenVal(
 
 ```
 
-
 ## Available methods
+
+### All methods
+```
+createTokenStore
+    -> createToken
+    -> setTokenVal
+    -> getTokenVal
+    -> getId
+    -> getTokens
+    -> clearToken
+    -> clearTokens
+    -> setTokens
+    -> getStore
+    -> setTokenCounter
+    -> getTokenCounter
+    -> updateId
+```
 
 #### createTokenStore([options])
 * @args
@@ -153,7 +169,7 @@ console.log(tokenStore.getTokens())
 
 #### setTokens(tokens)
 * @args
-    * tokens: object with only strings as values to add to the tokenStore. 
+    * tokens: object of token-value pairs or an array of tokens to add to the tokenStore. 
 
 Adds the given tokens to the internal tokenStore object, updating the token generation counter to the larger of (a) the new number of tokens in the store or (b) the largest trailing number in the updated store. 
 
@@ -228,6 +244,33 @@ console.log(tokenStore.getTokens())
 // output: [client0, connections1]
 ```
 
+#### getId()
+* @args
+    * NO ARGS
+
+Returns the current identifier used as the base for generated token strings.
+
+```javascript
+const tokenStore = TokenLink.createTokenStore({id: 'client'})
+
+tokenStore.updateId('connections')
+
+console.log(tokenStore.getId()) 
+// output: 'connections'
+```
+
+#### getTokenCounter()
+* @args
+    * NO ARGS
+
+Returns the current internal counter variable used to create tokens. 
+
+```javascript
+const tokenStore = createTokenStore()
+tokenStore.setTokenCounter(42)
+console.log(tokenStore.getTokenCounter()) 
+// output: 42
+```
 
 ## Thank you! 
 

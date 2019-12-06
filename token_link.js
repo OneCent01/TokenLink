@@ -15,7 +15,7 @@ const createTokenStore = (options={}) => {
 			let endFound = false
 			
 			const numbers = token.split('').reverse().reduce((final, char) => {
-				if(!endFound && typeof +char === 'number') {
+				if(!endFound && !isNaN(Number(char))) {
 					final.push(char)
 				} else {
 					endFound = true
@@ -24,7 +24,6 @@ const createTokenStore = (options={}) => {
 			}, [])
 			
 			const number = +(numbers.reverse().join(''))
-
 			if(number+1 > max) {
 				max = number+1
 			}
@@ -48,7 +47,10 @@ const createTokenStore = (options={}) => {
 	}
 
 
-	const setTokenCounter = counterVal => {storeState.created = Math.floor(counterVal)}
+	const setTokenCounter = counterVal => {
+		storeState.created = Math.floor(counterVal)
+		return true
+	}
 
 	const setTokenVal = (val, token=`${storeState.id}${storeState.created}`) => {
 		if(storeState.store.hasOwnProperty(token)) {
@@ -121,7 +123,8 @@ const createTokenStore = (options={}) => {
 				&& typeof counterVal === 'number'
 			) {
 				setTokenCounter(counterVal)
-			}
+			} 
+			return true
 		}
 	}
 }
